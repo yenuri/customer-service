@@ -11,32 +11,34 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Slf4j
+@RequestMapping(value = "/api/customers")
 @RestController
 public class CustomerController {
 
     @Autowired
     private ICustomerService customerService;
 
-    @PostMapping("api/customers")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<Customer> create(@RequestBody Customer customer) {
         log.info("<<<<< Create Customer >>>>>");
         return customerService.create(customer);
     }
 
-    @GetMapping("api/customers/{id}")
+    @GetMapping("/{id}")
     public Mono<Customer> findById(@PathVariable String id) {
         log.info("<<<<< Find One Customer >>>>>");
         return customerService.findById(id);
     }
 
-    @GetMapping("api/customers")
-    public Flux<Customer> findAll() {
+    @GetMapping("")
+    public Flux<Customer> findAll(@RequestParam(value = "dni",defaultValue = "") String dni) {
         log.info("<<<<< Find All Customers >>>>>");
-        return customerService.findAll();
+        //return customerService.findAll();
+        return dni.isEmpty()?customerService.findAll():customerService.findByDni(dni);
     }
 
-    @PutMapping("api/customers/{id}")
+    @PutMapping("")
     public Mono<ResponseEntity<Customer>> update(@RequestBody Customer customer) {
         log.info("<<<<< Update Customer >>>>>");
         return customerService.update(customer)
@@ -44,7 +46,7 @@ public class CustomerController {
                 .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
 
-    @DeleteMapping("api/customers/{id}")
+    @DeleteMapping("/{id}")
     public Mono<Customer> delete(@PathVariable String id) {
         log.info("<<<<< Delete Customer >>>>>");
         return customerService.delete(id);

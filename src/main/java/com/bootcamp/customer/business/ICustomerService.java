@@ -15,4 +15,6 @@ public interface ICustomerService {
     Mono<Customer> update(Customer customer);
 
     Mono<Customer> delete(String id);
+
+    Flux<Customer> findByDni(String dni);
 }

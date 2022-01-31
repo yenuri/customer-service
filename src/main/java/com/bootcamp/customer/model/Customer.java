@@ -1,11 +1,14 @@
 package com.bootcamp.customer.model;
 
+import com.bootcamp.customer.utils.CustomerStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 @Setter
 @Getter
@@ -20,8 +23,9 @@ public class Customer {
     private String lastname;
     private String email;
     private String dni;
-    private String typeCustomer;
+    private String customerType;
     private String address;
     private String phone;
-    private boolean isActive;
+    private String status;
+    private Date CreationDateAt;
 }
